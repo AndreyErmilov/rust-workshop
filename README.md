@@ -20,8 +20,18 @@ git clone git@github.com:AndreyErmilov/rust-workshop.git
 ```
 
 ## Run project
+
+Run API
 ```bash
 cargo run
+```
+Create first event
+```bash
+curl -X POST localhost:8080/v1/events/ -H "content-type: application/json" -d @test-data/send-message.json
+```
+View created event
+```bash
+curl localhost:8080/v1/users/42/events/
 ```
 
 ## Build project

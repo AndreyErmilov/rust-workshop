@@ -1,0 +1,9 @@
+{
+    "user_id": 42,
+    "device_id": "2b0m5dat.1ffdzcy",
+    "item_id": 150,
+    "geo_id": 64,
+    "event_type": "SendMessage",
+    "category_id": 16,
+    "timestamp": null
+}
