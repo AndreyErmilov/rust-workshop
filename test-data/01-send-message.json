@@ -1,0 +1,9 @@
+{
+    "user_id": 42,
+    "device_id": "123e4567-e89b-12d3-a456-426614174000",
+    "item_id": 150,
+    "geo_id": 64,
+    "event_type": 103,
+    "category_id": 16,
+    "timestamp": null
+}

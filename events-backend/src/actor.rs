@@ -1,7 +1,7 @@
 use crate::error::Error;
 use actix::prelude::*;
 use redis::{aio::ConnectionManager, Client};
-use crate::messages::{Get, Add};
+use crate::messages::{GetStream, AddToStream};
 use tracing::info;
 
 pub struct RedisBackend {
@@ -47,12 +47,12 @@ impl RedisBackendBuilder {
     }
 }
 
-/// Implementation actix Actor trait for Redis cache backend.
+/// Implementation actix Actor trait for Redis backend.
 impl Actor for RedisBackend {
     type Context = Context<Self>;
 
     fn started(&mut self, _: &mut Self::Context) {
-        info!("Cache actor started");
+        info!("Redis actor started");
     }
 }
 
@@ -83,11 +83,11 @@ impl Apply<redis::Value> for String {
     }
 }
 
-/// Implementation of Actix Handler for Get message.
-impl Handler<Get> for RedisBackend {
+/// Implementation of Redis Actor handler for GetStream message.
+impl Handler<GetStream> for RedisBackend {
     type Result = ResponseFuture<Result<Vec<String>, Error>>;
 
-    fn handle(&mut self, msg: Get, _: &mut Self::Context) -> Self::Result {
+    fn handle(&mut self, msg: GetStream, _: &mut Self::Context) -> Self::Result {
         let mut con = self.connection.clone();
         let fut = async move {
             redis::cmd("XRANGE")
@@ -108,18 +108,18 @@ impl Handler<Get> for RedisBackend {
     }
 }
 
-/// Implementation of Actix Handler for Set message.
-impl Handler<Add> for RedisBackend {
+/// Implementation of Redis Actor handler for AddToStream message.
+impl Handler<AddToStream> for RedisBackend {
     type Result = ResponseFuture<Result<String, Error>>;
 
-    fn handle(&mut self, msg: Add, _: &mut Self::Context) -> Self::Result {
+    fn handle(&mut self, msg: AddToStream, _: &mut Self::Context) -> Self::Result {
         let mut con = self.connection.clone();
         Box::pin(async move {
             let mut request = redis::cmd("XADD");
             request
                 .arg(msg.stream)
                 .arg("*")
-                .arg(msg.key)
+                .arg("_")
                 .arg(msg.value)
                 .query_async(&mut con)
                 .await

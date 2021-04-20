@@ -25,14 +25,20 @@ Run API
 ```bash
 cargo run
 ```
-Create first event
+Post events
 ```bash
-curl -X POST localhost:8080/v1/events/ -H "content-type: application/json" -d @test-data/send-message.json
+./run.sh
 ```
 View created event
 ```bash
 curl localhost:8080/v1/users/42/events/
 ```
+
+## Tasks
+* Check with clippy and fix error
+```cargo clippy --all-targets --all-features -- -D warnings```
+* Add new event type – 112 (RefreshPage)
+* Add new handler `v1/users/{user_id}/events/{event_type}/`
 
 ## Build project
 ```bash

@@ -1,31 +1,30 @@
 use actix::Message;
 use crate::error::Error;
 
-/// Actix message requests cache backend value by key.
+/// Actix message requests stream values by stream name.
 #[derive(Message, Debug, Clone, PartialEq)]
 #[rtype(result = "Result<Vec<String>, Error>")]
-pub struct Get {
+pub struct GetStream {
     pub stream: String,
 }
 
-impl Get {
+impl GetStream {
     pub fn new(stream: String) -> Self {
         Self { stream }
     }
 }
 
 
-/// Actix message writes cache backend value by key.
+/// Actix message writes stream values by stream name.
 #[derive(Message, Debug, Clone, PartialEq)]
 #[rtype(result = "Result<String, Error>")]
-pub struct Add {
+pub struct AddToStream {
     pub stream: String,
-    pub key: String,
     pub value: String,
 }
 
-impl Add {
-    pub fn new(stream: String, key: String, value: String) -> Self {
-        Self { stream, key, value }
+impl AddToStream {
+    pub fn new(stream: String, value: String) -> Self {
+        Self { stream, value }
     }
 }
