@@ -14,10 +14,6 @@ make
 ```
 ### IDE
 Download Rust plugin for [PyCharm](https://plugins.jetbrains.com/plugin/8182-rust)
-### Project
-```bash
-git clone git@github.com:AndreyErmilov/rust-workshop.git
-```
 
 ## Run project
 
