@@ -36,7 +36,7 @@ async fn main() -> std::io::Result<()> {
             .wrap(middleware::Logger::default())
             .data(redis.clone())
             .data(json_config)
-            .app_data(cache.clone())
+            .data(cache.clone())
             .service(web::scope("/v1").configure(v1::routes))
     })
     .bind("127.0.0.1:8080")
