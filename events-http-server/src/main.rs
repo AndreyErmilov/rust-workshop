@@ -2,8 +2,9 @@ use actix_web::{middleware, web, App, HttpServer, HttpResponse, error};
 use events::routes::v1;
 use events_backend::RedisBackend;
 use tracing::Level;
-use actix::Actor;
+use actix::prelude::*;
 use events::response_error::ErrorPayload;
+use hitbox_actix::prelude::*;
 
 #[actix_web::main]
 async fn main() -> std::io::Result<()> {
@@ -14,6 +15,9 @@ async fn main() -> std::io::Result<()> {
         .await
         .unwrap()
         .start();
+    let cache_actor = Cache::new()
+        .await
+        .unwrap();
 
     HttpServer::new(move || {
          let json_config = web::JsonConfig::default()
