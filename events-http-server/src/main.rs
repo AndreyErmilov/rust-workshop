@@ -2,8 +2,9 @@ use actix_web::{middleware, web, App, HttpServer, HttpResponse, error};
 use events::routes::v1;
 use events_backend::RedisBackend;
 use tracing::Level;
-use actix::Actor;
+use actix::prelude::*;
 use events::response_error::ErrorPayload;
+use hitbox_actix::prelude::*;
 
 #[actix_web::main]
 async fn main() -> std::io::Result<()> {
@@ -11,6 +12,10 @@ async fn main() -> std::io::Result<()> {
 
     let redis = RedisBackend::builder()
         .build()
+        .await
+        .unwrap()
+        .start();
+    let cache = Cache::new()
         .await
         .unwrap()
         .start();
@@ -31,6 +36,7 @@ async fn main() -> std::io::Result<()> {
             .wrap(middleware::Logger::default())
             .data(redis.clone())
             .data(json_config)
+            .data(cache.clone())
             .service(web::scope("/v1").configure(v1::routes))
     })
     .bind("127.0.0.1:8080")

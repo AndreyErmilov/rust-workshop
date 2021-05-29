@@ -14,3 +14,5 @@ actix-rt = "1"
 thiserror = "1"
 tracing = "0.1"
 tracing-subscriber = "0.2"
+hitbox-actix = "0.1"
+serde = { version = "1", features = ["derive"] }

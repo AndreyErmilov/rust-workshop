@@ -15,6 +15,7 @@ impl From<&ServiceError> for ErrorPayload {
             message: match error {
                 ServiceError::BackendError(err) => Some(err.to_string()),
                 ServiceError::MailboxError(err) => Some(err.to_string()),
+                ServiceError::CacheError(err) => Some(err.to_string()),
             },
         }
     }
@@ -26,6 +27,7 @@ impl ResponseError for ServiceError {
         match self {
             ServiceError::MailboxError(_)
             | ServiceError::BackendError(_)
+            | ServiceError::CacheError(_)
                 => HttpResponse::InternalServerError().json(payload),
         }
     }

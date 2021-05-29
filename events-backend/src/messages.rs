@@ -1,8 +1,10 @@
 use actix::Message;
+use hitbox_actix::prelude::*;
 use crate::error::Error;
+use serde::Serialize;
 
 /// Actix message requests stream values by stream name.
-#[derive(Message, Debug, Clone, PartialEq)]
+#[derive(Message, Debug, Clone, PartialEq, Cacheable, Serialize)]
 #[rtype(result = "Result<Vec<String>, Error>")]
 pub struct GetStream {
     pub stream: String,

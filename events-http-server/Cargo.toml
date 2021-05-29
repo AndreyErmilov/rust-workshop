@@ -17,3 +17,4 @@ thiserror = "1"
 chrono = "0.4"
 events-backend = { path = "../events-backend" }
 events-serializers = { path = "../events-serializers" }
+hitbox-actix = "0.1.1"
